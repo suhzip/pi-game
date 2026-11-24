@@ -1,25 +1,46 @@
-"""게임 공통 설정. GitHub 원본의 값 그대로 유지."""
+"""게임 공통 설정."""
 
-# Sky Pop: Raspberry Pi + Adafruit 1.3-inch TFT Bonnet (240 x 240)
 W = H = 240
+
+# 캐릭터 설정
 MOVE_SPEED = 260.0
 JUMP_POWER = -470.0
 RISE_GRAVITY = 900.0
 FALL_GRAVITY = 1750.0
 MAX_FALL_SPEED = 760.0
-CLOUD_GAP = 62.0
-CLOUD_SPEED = 22.0
 PLAYER_RADIUS = 10
 LANDING_OFFSET = 9
+
+# 구름 설정
+CLOUD_GAP = 62.0
+CLOUD_SPEED = 22.0
 STORM_CHANCE = 0.35
+START_PLATFORM_Y = 214.0
+
+# 스테이지 설정
 STAGE_HEIGHT = 500
 FINAL_HEIGHT = 1500
-START_PLATFORM_Y = 214.0
 BANNER_SECONDS = 1.3
+
+# 새 장애물 설정
 BIRD_SPEED = 95.0
 BIRD_INTERVAL = 2.4
 BIRD_KNOCKDOWN = 300.0
-STAGE_NAMES = {1: "SUNNY SKY", 2: "CLOUD TRAP", 3: "DANGER ZONE"}
-PALETTES = {1: ((95, 175, 245), (145, 222, 250)),
-            2: ((96, 113, 162), (164, 183, 215)),
-            3: ((40, 45, 88), (93, 103, 158))}
+
+# 목숨 및 피격 설정
+MAX_LIVES = 3
+HIT_INVINCIBILITY = 1.0
+
+# 스테이지 이름
+STAGE_NAMES = {
+    1: "SUNNY SKY",
+    2: "CLOUD TRAP",
+    3: "DANGER ZONE"
+}
+
+# 스테이지별 배경 색상
+PALETTES = {
+    1: ((95, 175, 245), (145, 222, 250)),
+    2: ((96, 113, 162), (164, 183, 215)),
+    3: ((40, 45, 88), (93, 103, 158))
+}
