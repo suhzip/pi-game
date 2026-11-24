@@ -1,7 +1,13 @@
-"""캐릭터 이동, 물리 계산, 피격 처리 및 그래픽."""
+"""캐릭터 이동, 물리 계산, 피격 처리 및 이미지 렌더링."""
+
+from pathlib import Path
+from functools import lru_cache
+from PIL import Image
 
 from config import (
     W,
+    PLAYER_WIDTH,
+    PLAYER_HEIGHT,
     MOVE_SPEED,
     PLAYER_RADIUS,
     LANDING_OFFSET,
@@ -10,6 +16,32 @@ from config import (
     MAX_FALL_SPEED,
     HIT_INVINCIBILITY
 )
+
+
+# =========================
+# 캐릭터 이미지 경로
+# =========================
+ASSET_DIR = Path(__file__).resolve().parent / "assets"
+
+PLAYER_IMAGE = ASSET_DIR / "player.png"
+
+
+# =========================
+# 캐릭터 이미지 불러오기
+# =========================
+@lru_cache(maxsize=1)
+def player_sprite():
+
+    with Image.open(PLAYER_IMAGE) as image:
+
+        sprite = image.convert("RGBA")
+
+        sprite = sprite.resize(
+            (PLAYER_WIDTH, PLAYER_HEIGHT),
+            Image.Resampling.NEAREST
+        )
+
+    return sprite
 
 
 # =========================
@@ -57,7 +89,7 @@ def update_player(game, dt):
     if game.joy.pressed("right"):
         game.px += MOVE_SPEED * dt
 
-    # 화면 밖으로 이동하지 않도록 제한
+    # 화면 밖 이동 방지
     game.px = max(
         PLAYER_RADIUS,
         min(W - PLAYER_RADIUS, game.px)
@@ -89,52 +121,27 @@ def update_player(game, dt):
 
 
 # =========================
-# 캐릭터 그래픽
+# 캐릭터 이미지 화면 출력
 # =========================
 def draw_player(game, x, y):
 
-    x, y = int(x), int(y)
+    # 캐릭터 이미지 불러오기
+    sprite = player_sprite()
 
-    d = game.draw
+    # 캐릭터 중심 기준 가로 위치
+    draw_x = int(x) - sprite.width // 2
 
-    # 왼쪽 귀
-    d.ellipse(
-        (x-11, y-15, x-5, y-3),
-        fill=(255, 184, 214)
+    # 기존 착지 기준에 맞춰 세로 위치 계산
+    draw_y = (
+        int(y)
+        + LANDING_OFFSET
+        - sprite.height
+        + 1
     )
 
-    # 오른쪽 귀
-    d.ellipse(
-        (x+5, y-15, x+11, y-3),
-        fill=(255, 184, 214)
-    )
-
-    # 몸통
-    d.ellipse(
-        (x-11, y-10, x+11, y+9),
-        fill=(255, 214, 233)
-    )
-
-    # 왼쪽 눈
-    d.ellipse(
-        (x-5, y-2, x-3, y),
-        fill=(30, 30, 45)
-    )
-
-    # 오른쪽 눈
-    d.ellipse(
-        (x+3, y-2, x+5, y),
-        fill=(30, 30, 45)
-    )
-
-    # 왼쪽 볼
-    d.ellipse(
-        (x-8, y+2, x-4, y+5),
-        fill=(255, 138, 173)
-    )
-
-    # 오른쪽 볼
-    d.ellipse(
-        (x+4, y+2, x+8, y+5),
-        fill=(255, 138, 173)
+    # 투명 배경을 유지하면서 이미지 합성
+    game.image.paste(
+        sprite,
+        (draw_x, draw_y),
+        sprite
     )
