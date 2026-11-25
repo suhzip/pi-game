@@ -42,8 +42,8 @@ Raspberry Pi와 TFT LCD를 기반으로 동작하며, Pygame 없이 게임 로�
 | Stage | Name | Height | 장애물 |
 |---|---|---|---|
 | Stage 1 | Sunny Sky | 0 ~ 1000 | 일반 구름 |
-| Stage 2 | Cloud Trap | 1000 ~ 2000 | 일반 구름 및 먹구름 |
-| Stage 3 | Danger Zone | 2000 ~ 3000 | 먹구름 및 새 장애물 |
+| Stage 2 | Cloud Trap | 1000 ~ 2500 | 일반 구름 및 먹구름 |
+| Stage 3 | Danger Zone | 2500 ~ 4500 | 먹구름 및 새 장애물 |
 
 최종 목표 높이인 3000에 도달하면 게임을 클리어한다.
 
