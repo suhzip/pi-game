@@ -1,47 +1,54 @@
 """게임 공통 설정."""
-
 W = H = 240
 
-# 캐릭터 설정
+# 캐릭터
 PLAYER_WIDTH = 24
-PLAYER_HEIGHT = 30
-PLAYER_RADIUS = 13
-
-MOVE_SPEED = 260.0
-JUMP_POWER = -470.0
+PLAYER_HEIGHT = 31
+PLAYER_RADIUS = 12
+MOVE_SPEED = 320.0
+JUMP_POWER = -505.0
 RISE_GRAVITY = 900.0
 FALL_GRAVITY = 1750.0
 MAX_FALL_SPEED = 760.0
 LANDING_OFFSET = 9
 
-# 구름 설정
+# 구름
 CLOUD_GAP = 62.0
-CLOUD_SPEED = 22.0
+CLOUD_SPEED = 32.0
 STORM_CHANCE = 0.35
 START_PLATFORM_Y = 214.0
 
-# 스테이지 설정
-STAGE_HEIGHT = 500
-FINAL_HEIGHT = 1500
+# 스테이지
+STAGE_LENGTHS = {1: 1000, 2: 1500, 3: 2000}
+STAGE_STARTS = {stage: sum(STAGE_LENGTHS[i] for i in range(1, stage))
+                for stage in STAGE_LENGTHS}
+STAGE_TARGETS = {stage: STAGE_STARTS[stage] + length
+                 for stage, length in STAGE_LENGTHS.items()}
+FINAL_HEIGHT = STAGE_TARGETS[3]
+
+# 마지막 구조 구름과 여우
+GOAL_CLOUD_WIDTH = 84
+FOX_WIDTH = 36
+FOX_HEIGHT = 42
+RESCUE_SECONDS = 1.6
 BANNER_SECONDS = 1.3
 
-# 새 장애물 설정
+# 새 장애물
+BIRD_WIDTH = 36
+BIRD_HEIGHT = 20
 BIRD_SPEED = 95.0
 BIRD_INTERVAL = 2.4
 BIRD_KNOCKDOWN = 300.0
 
-# 목숨 및 피격 설정
+# 목숨 및 피격
 MAX_LIVES = 3
 HIT_INVINCIBILITY = 1.0
 
-# 스테이지 이름
 STAGE_NAMES = {
     1: "SUNNY SKY",
     2: "CLOUD TRAP",
     3: "DANGER ZONE"
 }
-
-# 스테이지별 배경 색상
 PALETTES = {
     1: ((95, 175, 245), (145, 222, 250)),
     2: ((96, 113, 162), (164, 183, 215)),
