@@ -1,4 +1,3 @@
-
 def main():
     print("Sky Pop Game Start!")
 
