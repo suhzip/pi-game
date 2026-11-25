@@ -83,13 +83,6 @@ GPIO를 통한 사용자 입력과 SPI를 통한 LCD 출력이 하나의 실시�
 - PNG 픽셀아트, 스테이지별 배경 및 이미지 캐싱을 통한 반복 로딩 감소
 - 시작 화면, 스테이지 전환 배너, 구출 연출 및 게임 결과 화면
 
-```mermaid
-flowchart LR
-    A[Joystick] -->|GPIO| B[Python Game Logic]
-    B --> C[Pillow Renderer]
-    C -->|SPI| D[ST7789 TFT LCD]
-```
-
 ### 개발 중 발생한 문제와 해결 방법
 
 | 문제 | 해결 방법 | 관련 파일 |
