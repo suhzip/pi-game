@@ -39,13 +39,13 @@ Raspberry Pi와 TFT LCD를 기반으로 동작하며, Pygame 없이 게임 로�
 
 ## 4. 스테이지 구성
 
-| Stage | Theme | Height | 특징 |
+| Stage | Name | Height | 장애물 |
 |---|---|---|---|
-| Stage 1 | Sunny Sky | 0 ~ 500 | 일반 구름 |
-| Stage 2 | Cloud Trap | 500 ~ 1000 | 일반 구름 및 먹구름 |
-| Stage 3 | Danger Zone | 1000 ~ 1500 | 먹구름 및 새 장애물 |
+| Stage 1 | Sunny Sky | 0 ~ 1000 | 일반 구름 |
+| Stage 2 | Cloud Trap | 1000 ~ 2000 | 일반 구름 및 먹구름 |
+| Stage 3 | Danger Zone | 2000 ~ 3000 | 먹구름 및 새 장애물 |
 
-최종 목표 높이인 1500에 도달하면 게임을 클리어한다.
+최종 목표 높이인 3000에 도달하면 게임을 클리어한다.
 
 ## 5. 주요 기능
 
@@ -72,15 +72,11 @@ Raspberry Pi와 TFT LCD를 기반으로 동작하며, Pygame 없이 게임 로�
 
 ### Pixel Art
 
-| 일반 구름 | 먹구름 |
-|:---:|:---:|
-| ![Normal Cloud](assets/cloud_normal.png) | ![Storm Cloud](assets/cloud_storm.png) |
-| 안전한 점프 발판 | 목숨이 감소하는 위험 발판 |
+![Player](assets/player.png)
+![Normal Cloud](assets/cloud_normal.png)
+![Storm Cloud](assets/cloud_storm.png)
 
-- 투명 배경 PNG 기반 픽셀아트 적용
-- 구름 가로 크기 축소 (64px → 56px)
-- 이미지 크기에 따른 충돌 범위 조정
-- 이미지 캐싱을 통한 반복 로딩 최소화
+캐릭터 및 장애물에 PNG 기반 픽셀아트 이미지를 적용하였다.
 
 ## 6. 프로젝트 파일 구조
 
