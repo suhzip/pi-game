@@ -1,11 +1,16 @@
-"""Stage 3 새 장애물 생성, 이동 및 충돌 처리."""
+"""Stage 3 새 장애물 생성, 이동, 충돌 및 이미지 관리."""
 
 import random
+
+from pathlib import Path
 from functools import lru_cache
-from PIL import Image, ImageDraw
+from PIL import Image, ImageOps
 
 from config import (
-    W, H,
+    W,
+    H,
+    BIRD_WIDTH,
+    BIRD_HEIGHT,
     BIRD_SPEED,
     BIRD_INTERVAL,
     BIRD_KNOCKDOWN
@@ -14,48 +19,53 @@ from config import (
 from player import take_damage
 
 
-# 새 이미지 생성
+# =========================
+# 새 이미지 경로
+# =========================
+ASSET_DIR = Path(__file__).resolve().parent / "assets"
+
+BIRD_IMAGE = ASSET_DIR / "bird.png"
+
+
+# =========================
+# 새 PNG 이미지 불러오기
+# =========================
 @lru_cache(maxsize=1)
 def bird_sprite():
 
-    sprite = Image.new("RGBA", (36, 20))
-    d = ImageDraw.Draw(sprite)
+    with Image.open(BIRD_IMAGE) as image:
 
-    # 외곽선
-    d.polygon([
-        (0, 2), (12, 6), (18, 11),
-        (24, 6), (35, 2), (30, 13),
-        (22, 18), (13, 18), (5, 13)
-    ], fill="#70495A")
+        sprite = image.convert("RGBA")
 
-    # 날개
-    d.polygon([
-        (2, 3), (13, 8), (18, 12),
-        (24, 8), (33, 3), (28, 12),
-        (21, 16), (14, 16), (7, 12)
-    ], fill="#E69B6F")
+        # 원본 비율을 유지하면서 크기 조절
+        sprite = ImageOps.contain(
+            sprite,
+            (BIRD_WIDTH, BIRD_HEIGHT),
+            Image.Resampling.NEAREST
+        )
 
-    # 몸통
-    d.rectangle(
-        (16, 5, 25, 13),
-        fill="#F8D09A"
+    # 기존 렌더링 크기에 맞는 투명 이미지
+    canvas = Image.new(
+        "RGBA",
+        (BIRD_WIDTH, BIRD_HEIGHT),
+        (0, 0, 0, 0)
     )
 
-    # 눈
-    d.rectangle(
-        (22, 7, 23, 8),
-        fill="#292638"
+    # 새 이미지를 가운데 배치
+    canvas.paste(
+        sprite,
+        (
+            (BIRD_WIDTH - sprite.width) // 2,
+            (BIRD_HEIGHT - sprite.height) // 2
+        )
     )
 
-    # 부리
-    d.polygon([
-        (26, 8), (32, 10), (26, 12)
-    ], fill="#FFDF68")
-
-    return sprite
+    return canvas
 
 
+# =========================
 # 새 장애물 갱신
+# =========================
 def update_birds(game, dt, old_x, old_y):
 
     # Stage 3에서만 새 등장
@@ -99,7 +109,10 @@ def update_birds(game, dt, old_x, old_y):
         t = (
             max(
                 0.0,
-                min(1.0, -(ax * dx + ay * dy) / length2)
+                min(
+                    1.0,
+                    -(ax * dx + ay * dy) / length2
+                )
             )
             if length2 else 0.0
         )
